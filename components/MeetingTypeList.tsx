@@ -5,14 +5,22 @@ import React from 'react'
 import HomeCard from './HomeCard'
 import { useRouter } from 'next/navigation';
 import MeetingModal from './MeetingModal';
-import { useStreamVideoClient } from '@stream-io/video-react-sdk';
+import { Call, useStreamVideoClient } from '@stream-io/video-react-sdk';
 import { useUser } from '@clerk/nextjs';
+import { useToast } from '@/components/ui/use-toast';
 
 const MeetingTypeList = () => {
     const router = useRouter();
     const [meetingState, setMeetingState] = useState<
     'isScheduleMeeting' | 'isJoiningMeeting' | 'isInstantMeeting' | undefined
   >(undefined);
+
+  const initialValues = {
+    dateTime: new Date(),
+    description: '',
+    link: '',
+  };
+
 
   const [values, setValues] = useState(initialValues);
   const [callDetail, setCallDetail] = useState<Call>();
@@ -87,10 +95,10 @@ const MeetingTypeList = () => {
         />
         
       <MeetingModal 
-       isOpen={meetingState === 'isScheduleMeeting'}
+       isOpen={meetingState === 'isInstantMeeting'}
        onClose={() => setMeetingState(undefined)}
        title="Create Meeting"
-       //handleClick={createMeeting}
+       handleClick={createMeeting}
       />
     </section >
   )
